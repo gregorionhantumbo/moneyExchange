@@ -1,38 +1,29 @@
 package sd.softdeving.moneyExchange.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import sd.softdeving.moneyExchange.entity.CurrencyRate;
+import org.springframework.web.bind.annotation.*;
+import sd.softdeving.moneyExchange.entity.ConversionResult;
 import sd.softdeving.moneyExchange.service.CurrencyRateService;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @RestController
-@RequestMapping("/api/currency")
+@RequestMapping("/api/exchange")
 public class CurrencyRateController {
 
-    @Autowired
-    private CurrencyRateService service;
+    private final CurrencyRateService service;
 
-    @GetMapping("/{code}")
-    public List<CurrencyRate> getRates(@PathVariable String code) {
-        return service.findByCurrency(code);
+    public CurrencyRateController(CurrencyRateService service) {
+        this.service = service;
     }
 
-    @GetMapping("/{code}/max")
-    public ResponseEntity<CurrencyRate> getMaxRate(@PathVariable String code) {
-        return service.findHighestRate(code)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @GetMapping("/{code}/avg")
-    public BigDecimal getAverageRate(@PathVariable String code) {
-        return service.averageRate(code);
+    @GetMapping("/convert")
+    public ResponseEntity<ConversionResult> convert(@RequestParam String from,
+                                                    @RequestParam String to,
+                                                    @RequestParam BigDecimal amount) {
+        BigDecimal converted = service.convert(from, to, amount);
+        ConversionResult result = new ConversionResult(from, to, amount, converted);
+        return ResponseEntity.ok(result);
     }
 }
+
