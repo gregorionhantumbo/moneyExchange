@@ -1,5 +1,6 @@
 package sd.softdeving.moneyExchange.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -11,7 +12,8 @@ import java.util.Map;
 public class CurrencyRateService {
 
     private final RestTemplate restTemplate;
-    private final String API_KEY = "cur_live_CK8Zd3LSGRlyx7r1smZypvEcL5XatjMNFowIhUHx";
+    @Value("${currency.api.key}")
+    private String API_KEY;
 
     public CurrencyRateService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
