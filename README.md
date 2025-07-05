@@ -33,6 +33,8 @@ A **simple RESTful API** built with **Spring Boot 3**, using `RestTemplate` to f
 
 ```bash
 moneyExchange/
+├── frontend/
+│   └── index.html
 ├── src/
 │   └── main/
 │       ├── java/
@@ -98,14 +100,6 @@ moneyExchange/
    ```bash
    ./mvnw spring-boot:run
    ```
-
----
-
-### 🖥️ Running the Frontend
-
-1. Go to the `public/` directory
-2. Open `index.html` in your browser
-3. Fill in the form and click "Convert"
 
 ---
 
