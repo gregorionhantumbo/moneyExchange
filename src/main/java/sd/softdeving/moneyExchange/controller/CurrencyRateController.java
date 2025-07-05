@@ -21,9 +21,17 @@ public class CurrencyRateController {
     public ResponseEntity<ConversionResult> convert(@RequestParam String from,
                                                     @RequestParam String to,
                                                     @RequestParam BigDecimal amount) {
-        BigDecimal converted = service.convert(from, to, amount);
-        ConversionResult result = new ConversionResult(from, to, amount, converted);
+        BigDecimal conversionRate = service.getConversionRate(from, to);
+        BigDecimal convertedAmount = amount.multiply(conversionRate);
+
+        ConversionResult result = new ConversionResult(
+                from.toUpperCase(),
+                to.toUpperCase(),
+                amount,
+                convertedAmount,
+                conversionRate
+        );
+
         return ResponseEntity.ok(result);
     }
 }
-

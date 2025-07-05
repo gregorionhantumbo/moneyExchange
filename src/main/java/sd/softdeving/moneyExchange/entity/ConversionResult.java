@@ -16,4 +16,5 @@ public class ConversionResult {
     private String toCurrency;
     private BigDecimal originalAmount;
     private BigDecimal convertedAmount;
+    private BigDecimal conversionRate;
 }

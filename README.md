@@ -129,3 +129,4 @@ registry.addMapping("/api/**")
 - 🌍 Mozambique
 
 ---
+![Logo do Projeto](src/main/resources/static/imgs/moneyExchange.png)

@@ -12,6 +12,7 @@ import java.util.Map;
 public class CurrencyRateService {
 
     private final RestTemplate restTemplate;
+
     @Value("${currency_api_key}")
     private String API_KEY;
 
@@ -19,7 +20,8 @@ public class CurrencyRateService {
         this.restTemplate = restTemplate;
     }
 
-    public BigDecimal convert(String from, String to, BigDecimal amount) {
+    // Método para buscar a taxa de conversão
+    public BigDecimal getConversionRate(String from, String to) {
         String url = String.format(
                 "https://api.currencyapi.com/v3/latest?apikey=%s&base_currency=%s&currencies=%s",
                 API_KEY,
@@ -31,15 +33,12 @@ public class CurrencyRateService {
             ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
             Map body = response.getBody();
 
-            System.out.println("Resposta da CurrencyAPI:");
-            System.out.println(body);
-
             if (body != null && body.containsKey("data")) {
                 Map<String, Map<String, Object>> data = (Map<String, Map<String, Object>>) body.get("data");
                 Map<String, Object> currencyData = data.get(to.toUpperCase());
                 BigDecimal rate = new BigDecimal(currencyData.get("value").toString());
 
-                return amount.multiply(rate);
+                return rate;
             } else {
                 throw new RuntimeException("Erro ao obter taxa da CurrencyAPI: " + body);
             }
@@ -47,5 +46,11 @@ public class CurrencyRateService {
         } catch (Exception e) {
             throw new RuntimeException("Erro ao chamar a CurrencyAPI: " + e.getMessage(), e);
         }
+    }
+
+    // Método para converter o valor
+    public BigDecimal convert(String from, String to, BigDecimal amount) {
+        BigDecimal rate = getConversionRate(from, to);
+        return amount.multiply(rate);
     }
 }
