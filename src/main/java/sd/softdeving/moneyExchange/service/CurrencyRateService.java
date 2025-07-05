@@ -12,7 +12,7 @@ import java.util.Map;
 public class CurrencyRateService {
 
     private final RestTemplate restTemplate;
-    @Value("${currency.api.key}")
+    @Value("${currency_api_key}")
     private String API_KEY;
 
     public CurrencyRateService(RestTemplate restTemplate) {
