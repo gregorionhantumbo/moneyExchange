@@ -93,7 +93,7 @@ moneyExchange/
 
 2. Add your API key to `application.properties`:
    ```properties
-   currency.api.key=YOUR_API_KEY
+   currency_api_key=YOUR_API_KEY
    ```
 
 3. Start the application:
