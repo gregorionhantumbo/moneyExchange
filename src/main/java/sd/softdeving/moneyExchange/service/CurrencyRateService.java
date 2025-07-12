@@ -20,7 +20,7 @@ public class CurrencyRateService {
         this.restTemplate = restTemplate;
     }
 
-    // Método para buscar a taxa de conversão
+    // Method to fetch the conversion rate
     public BigDecimal getConversionRate(String from, String to) {
         String url = String.format(
                 "https://api.currencyapi.com/v3/latest?apikey=%s&base_currency=%s&currencies=%s",
@@ -40,15 +40,15 @@ public class CurrencyRateService {
 
                 return rate;
             } else {
-                throw new RuntimeException("Erro ao obter taxa da CurrencyAPI: " + body);
+                throw new RuntimeException("Error fetching rate from CurrencyAPI: " + body);
             }
 
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao chamar a CurrencyAPI: " + e.getMessage(), e);
+            throw new RuntimeException("Error calling CurrencyAPI: " + e.getMessage(), e);
         }
     }
 
-    // Método para converter o valor
+    // Method to convert the amount
     public BigDecimal convert(String from, String to, BigDecimal amount) {
         BigDecimal rate = getConversionRate(from, to);
         return amount.multiply(rate);

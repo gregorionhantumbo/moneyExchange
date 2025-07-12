@@ -18,9 +18,12 @@ public class CurrencyRateController {
     }
 
     @GetMapping("/convert")
-    public ResponseEntity<ConversionResult> convert(@RequestParam String from,
-                                                    @RequestParam String to,
-                                                    @RequestParam BigDecimal amount) {
+    public ResponseEntity<?> convert(@RequestParam String from,
+                                     @RequestParam String to,
+                                     @RequestParam BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Value must be greater than zero");
+        }
         BigDecimal conversionRate = service.getConversionRate(from, to);
         BigDecimal convertedAmount = amount.multiply(conversionRate);
 
